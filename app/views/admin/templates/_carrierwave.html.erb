@@ -1,0 +1,6 @@
+<li id="<%= attribute_id %>">
+  <%= form.label attribute, link_to_detach_attribute_for_carrierwave(attribute) %>
+  <%= typus_carrierwave_form_preview(@item, attribute) %><br>
+  <%= form.file_field attribute, options %>
+  <%= form.hidden_field "#{attribute}_cache" %>
+</li>

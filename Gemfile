@@ -27,8 +27,8 @@ platforms :jruby do
 end
 
 platforms :ruby do
-  gem "mysql2", "~> 0.3.11"
-  gem "pg", "~> 0.13.2"
+  # gem "mysql2", "~> 0.3.11"
+  # gem "pg", "~> 0.13.2"
   gem "sqlite3", "~> 1.3.5"
 end
 
@@ -57,6 +57,9 @@ gem "rack-cache", :require => "rack/cache"
 
 # Asset Management with Paperclip
 gem "paperclip", "~> 2.7.0"
+
+# Asset Management with Carrierwave
+gem "carrierwave", "~> 0.6.1"
 
 # MongoDB
 gem "mongoid", "~> 2.4.6"

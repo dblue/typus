@@ -22,7 +22,7 @@ module Typus
         def typus_fields_for(filter)
           ActiveSupport::OrderedHash.new.tap do |fields_with_type|
             get_typus_fields_for(filter).each do |field|
-              [:virtual, :custom, :association, :selector, :dragonfly, :paperclip].each do |attribute|
+              [:virtual, :custom, :association, :selector, :dragonfly, :paperclip, :carrierwave].each do |attribute|
                 if (value = send("#{attribute}_attribute?", field))
                   fields_with_type[field.to_s] = value
                 end
@@ -67,6 +67,12 @@ module Typus
           end
         end
 
+        def carrierwave_attribute?(field)
+          if respond_to?(:uploaders) && uploaders.try(:has_key?, field)
+            :carrierwave
+          end
+        end
+        
         def selector_attribute?(field)
           :selector if typus_field_options_for(:selectors).include?(field)
         end
