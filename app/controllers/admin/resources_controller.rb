@@ -48,7 +48,7 @@ class Admin::ResourcesController < Admin::BaseController
     # this behavior we need only to change how we merge the params.
     item_params = params[:resource] || {}
     item_params.merge!(params[@object_name])
-
+    
     @item = @resource.new
     @item.assign_attributes(item_params, :as => current_role)
 
@@ -134,7 +134,7 @@ class Admin::ResourcesController < Admin::BaseController
 
   def get_model
     @resource = resource
-    @object_name = ActiveModel::Naming.singular(@resource)
+    @object_name = ActiveModel::Naming.param_key(@resource)
   end
 
   def resource
