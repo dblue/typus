@@ -1,4 +1,4 @@
-<% connection = ENV["DB"] || 'postgresql' %>
+<% connection = ENV["DB"] || 'sqlite3' %>
 
 ##
 # Database settings.

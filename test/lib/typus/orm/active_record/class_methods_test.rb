@@ -123,12 +123,12 @@ class ClassMethodsTest < ActiveSupport::TestCase
   end
 
   test "typus_fields_for returns fields for new Asset" do
-    expected = %w(dragonfly dragonfly_required paperclip paperclip_required)
+    expected = %w(dragonfly dragonfly_required paperclip paperclip_required carrierwave carrierwave_required)
     assert_equal expected, Asset.typus_fields_for(:new).keys
   end
 
   test "typus_fields_for returns fields for edit Asset" do
-    expected = %w(caption dragonfly dragonfly_required paperclip paperclip_required)
+    expected = %w(caption dragonfly dragonfly_required paperclip paperclip_required carrierwave carrierwave_required)
     assert_equal expected, Asset.typus_fields_for(:edit).keys
   end
 
