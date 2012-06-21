@@ -8,12 +8,14 @@ module Admin::Resources::DataTypes::CarrierwaveHelper
   def link_to_detach_attribute_for_carrierwave(attribute)
     validators = @item.class.validators.delete_if { |i| i.class != ActiveModel::Validations::PresenceValidator }.map(&:attributes).flatten.map(&:to_s)
     attachment = @item.send(attribute)
-
+    
     if attachment.present? && !validators.include?(attribute) && attachment
       attribute_i18n = @item.class.human_attribute_name(attribute)
+      param_key = "#{ActiveModel::Naming.param_key(@item)}[remove_#{attribute}]"
+      link_options = {:action => 'update', :id => @item.id, param_key => true, :_continue => true}
       label_text = <<-HTML
 #{attribute_i18n}
-<small>#{link_to Typus::I18n.t("Remove"), { :action => 'update', :id => @item.id, :_nullify => attribute, :_continue => true }, :confirm => Typus::I18n.t("Are you sure?")}</small>
+<small>#{link_to Typus::I18n.t("Remove"), link_options, :confirm => Typus::I18n.t("Are you sure?")}</small>
       HTML
       label_text.html_safe
     end
