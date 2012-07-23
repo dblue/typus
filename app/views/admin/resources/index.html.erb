@@ -1,5 +1,5 @@
 <%
-  page_title = @resource.model_name.human.pluralize
+  page_title = @resource.model_name.human(:count => 2)
   admin_title(page_title)
 %>
 
@@ -22,7 +22,7 @@
 
     <% @resource.typus_scopes.each do |scope| %>
       <li>
-        <%= link_to Typus::I18n.t(scope.humanize), :scope => scope %>
+        <%= link_to Typus::I18n.t(scope.humanize), :action => 'index', :scope => scope %>
         <%= "(#{@resource.send(scope).count})" if @resource.typus_options_for(:counters)  %>
       </li>
     <% end %>

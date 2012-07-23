@@ -71,6 +71,14 @@ CHANGELOG
 
  * Added pagination detection on associations.
 
+ * [FIXED] `acts_as_tree` select values should be scaped.
+
+ * [FIXED] Scope should be always we applied to index action.
+
+ * Added `Typus.whitelist_ip` so we can configure which IP are allowed
+   to log into Typus, this is useful on systems with critical data
+   stored.
+
 Changes: <https://github.com/fesplugas/typus/compare/v3.1.10...master>
 
 3.1.11 (unreleased)
