@@ -12,7 +12,7 @@ ignores = `git ls-files -- doc/* Guardfile .travis.yml .gitignore`.split("\n")
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
   s.name = "typus"
-  s.version = Typus::VERSION
+  s.version = Typus::VERSION::STRING
   s.platform = Gem::Platform::RUBY
   s.authors = ["Francesc Esplugas"]
   s.email = ["support@typuscmf.com"]
@@ -27,8 +27,8 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_dependency "bcrypt-ruby", "~> 3.0.1"
-  s.add_dependency "jquery-rails", "~> 2.0.1"
-  s.add_dependency "rails", "~> 3.2.6"
+  s.add_dependency "jquery-rails", "~> 2.2.1"
+  s.add_dependency "rails", "~> 3.2.12"
 
   # Development dependencies are defined in the `Gemfile`.
 end

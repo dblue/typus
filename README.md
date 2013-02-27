@@ -52,7 +52,7 @@ and go to <http://0.0.0.0:3000/admin>.
 Testing
 -------
 
-[![Build Status](https://secure.travis-ci.org/fesplugas/typus.png)](http://travis-ci.org/fesplugas/typus)
+[![Build Status](https://travis-ci.org/fesplugas/typus.png?branch=master)](https://travis-ci.org/fesplugas/typus)
 
 Create a PostgreSQL database:
 
@@ -61,7 +61,7 @@ Create a PostgreSQL database:
 
 To test, clone the repo and run the following commands:
 
-    $ git clone git://github.com/fesplugas/typus.git
+    $ git clone --recursive git://github.com/fesplugas/typus.git
     $ bundle install --path vendor/bundle
     $ bundle exec rake
 
@@ -84,7 +84,6 @@ Links
 
 - [Documentation](http://docs.typuscmf.com/)
 - [RubyGems][typus_gem]
-- [Mailing List](http://groups.google.com/group/typus)
 - [Contributors List](http://github.com/fesplugas/typus/contributors)
 
 

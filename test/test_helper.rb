@@ -7,7 +7,8 @@ require File.expand_path("../dummy/db/schema",  __FILE__)
 
 require "rails/test_help"
 require "shoulda-context"
-require "minitest/pride"
+# require "minitest/pride"
+require "mocha"
 
 Rails.backtrace_cleaner.remove_silencers!
 
@@ -22,7 +23,7 @@ class ActiveSupport::TestCase
   end
 
   def db_adapter
-    ::ActiveRecord::Base.configurations[Rails.env]['adapter']
+    ::ActiveRecord::Base.connection_config[:adapter]
   end
 
   def build_admin

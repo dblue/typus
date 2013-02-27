@@ -22,8 +22,8 @@ module Typus
         respond_to do |format|
           format.html do
             # Actions by resource.
-            add_resource_action 'Restore', { :action => 'restore' }, { :confirm => Typus::I18n.t("Restore %{resource}?", :resource => @resource.model_name.human) }
-            add_resource_action 'Delete Permanently', { :action => 'wipe' }, { :confirm => Typus::I18n.t("Delete Permanently?") }
+            add_resource_action 'Restore', { :action => 'restore' }, { :data => { :confirm => Typus::I18n.t("Restore %{resource}?", :resource => @resource.model_name.human) } }
+            add_resource_action 'Delete Permanently', { :action => 'wipe' }, { :data => { :confirm => Typus::I18n.t("Delete Permanently?") } }
             # Generate and render.
             get_paginated_data
             render 'index'
@@ -36,10 +36,14 @@ module Typus
       end
 
       def restore
-        @resource.restore(params[:id])
-        redirect_to :back, :notice => Typus::I18n.t("%{resource} recovered from trash.", :resource => @resource.model_name.human)
-      rescue ActiveRecord::RecordNotFound
-        redirect_to :back, :notice => Typus::I18n.t("%{resource} can't be recovered from trash.", :resource => @resource.model_name.human)
+        begin
+          @resource.restore(params[:id])
+          message = "%{resource} recovered from trash."
+        rescue ActiveRecord::RecordNotFound
+          message = "%{resource} can't be recovered from trash."
+        end
+
+        redirect_to :back, :notice => Typus::I18n.t(message, :resource => @resource.model_name.human)
       end
 
       def wipe
