@@ -39,72 +39,71 @@ class Admin::SessionControllerTest < ActionController::TestCase
     assert_equal :en, I18n.locale
   end
 
-  context "With users" do
+  test 'new is rendered when there are users' do
+    FactoryGirl.create(:typus_user)
+    Typus.mailer_sender = nil
 
-    setup do
-      @typus_user = FactoryGirl.create(:typus_user)
-    end
+    get :new
+    assert_response :success
 
-    should "render new" do
-      get :new
-      assert_response :success
-    end
+    # render new and verify title and header
+    assert_select "title", "Typus &mdash; Sign in"
+    assert_select "h1", "Typus"
 
-    should "render new and verify title and header" do
-      get :new
-      assert_select "title", "Typus &mdash; Sign in"
-      assert_select "h1", "Typus"
-    end
+    # render session layout
+    assert_template "new"
+    assert_template "layouts/admin/session"
 
-    should "render session layout" do
-      get :new
-      assert_template "new"
-      assert_template "layouts/admin/session"
-    end
+    # verify_typus_sign_in_layout_does_not_include_recover_password_link
+    assert !response.body.include?("Recover password")
 
-    should "verify_typus_sign_in_layout_does_not_include_recover_password_link" do
-      get :new
-      assert !response.body.include?("Recover password")
-    end
+    Typus.mailer_sender = 'john@example.com'
+  end
 
-    should "verify new includes recover_password_link when mailer_sender is set" do
-      Typus.expects(:mailer_sender).returns("john@example.com")
-      get :new
-      assert response.body.include?("Recover password")
-    end
+  test "new includes recover_password_link when mailer_sender is set" do
+    FactoryGirl.create(:typus_user)
+    Typus.expects(:mailer_sender).returns("john@example.com")
+    get :new
+    assert response.body.include?("Recover password")
+  end
 
-    should "not_create_session_for_invalid_users" do
-      post :create, { :typus_user => { :email => "john@example.com", :password => "XXXXXXXX" } }
-      assert_response :redirect
-      assert_redirected_to new_admin_session_path
-    end
+  test 'create should not create session for invalid users' do
+    FactoryGirl.create(:typus_user)
 
-    should "not_create_session_for_a_disabled_user" do
-      typus_user = FactoryGirl.create(:typus_user, :email => "disabled@example.com", :status => false)
+    post :create, { :typus_user => { :email => "john@example.com", :password => "XXXXXXXX" } }
+    assert_response :redirect
+    assert_redirected_to new_admin_session_path
+  end
 
-      post :create, { :typus_user => { :email => typus_user.email, :password => "12345678" } }
+  test 'create should not create session for a disabled user' do
+    typus_user = FactoryGirl.create(:typus_user, :status => false)
 
-      assert_nil request.session[:typus_user_id]
-      assert_response :redirect
-      assert_redirected_to new_admin_session_path
-    end
+    post :create, { :typus_user => { :email => typus_user.email, :password => '12345678' } }
 
-    should "create_session_for_an_enabled_user" do
-      post :create, { :typus_user => { :email => @typus_user.email, :password => "12345678" } }
-      assert_equal @typus_user.id, request.session[:typus_user_id]
-      assert_response :redirect
-      assert_redirected_to admin_dashboard_index_path
-    end
+    assert_nil request.session[:typus_user_id]
+    assert_response :redirect
+    assert_redirected_to new_admin_session_path
+  end
 
-    should "destroy" do
-      delete :destroy
+  test 'create should create session for an enabled user' do
+    typus_user = FactoryGirl.create(:typus_user, :status => true)
 
-      assert_nil request.session[:typus_user_id]
-      assert_response :redirect
-      assert_redirected_to new_admin_session_path
-      assert flash.empty?
-    end
+    post :create, { :typus_user => { :email => typus_user.email, :password => "12345678" } }
+    assert_equal typus_user.id, request.session[:typus_user_id]
+    assert_response :redirect
+    assert_redirected_to admin_dashboard_index_path
+  end
 
+  test 'destroy' do
+    admin_sign_in
+    assert request.session[:typus_user_id]
+
+    delete :destroy
+
+    assert_nil request.session[:typus_user_id]
+    assert_response :redirect
+    assert_redirected_to new_admin_session_path
+    assert flash.empty?
   end
 
 end

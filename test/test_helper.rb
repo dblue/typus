@@ -6,9 +6,8 @@ ActiveRecord::Schema.verbose = false
 require File.expand_path("../dummy/db/schema",  __FILE__)
 
 require "rails/test_help"
-require "shoulda-context"
 # require "minitest/pride"
-require "mocha"
+require "mocha/setup"
 
 Rails.backtrace_cleaner.remove_silencers!
 
@@ -42,6 +41,7 @@ class ActiveSupport::TestCase
   def editor_sign_in
     build_editor
     set_session(@typus_user.id)
+    @request.env['HTTP_REFERER'] = '/admin/typus_users'
   end
 
   def build_designer
